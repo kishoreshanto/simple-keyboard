@@ -16,8 +16,8 @@
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:top="8dp"
-        android:bottom="8dp">
+        android:top="5dp"
+        android:bottom="5dp">
 
         <shape android:shape="rectangle">
             <solid android:color="?attr/keyPressedBackgroundColor" />

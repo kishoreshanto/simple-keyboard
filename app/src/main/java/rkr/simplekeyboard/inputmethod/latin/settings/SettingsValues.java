@@ -71,7 +71,7 @@ public class SettingsValues {
         mInputAttributes = inputAttributes;
 
         // Get the settings preferences
-        mAutoCap = prefs.getBoolean(Settings.PREF_AUTO_CAP, true);
+        mAutoCap = prefs.getBoolean(Settings.PREF_AUTO_CAP, false);
         mVibrateOn = Settings.readVibrationEnabled(prefs, res);
         mSoundOn = Settings.readKeypressSoundEnabled(prefs, res);
         mKeyPreviewPopupOn = Settings.readKeyPreviewPopupEnabled(prefs, res);

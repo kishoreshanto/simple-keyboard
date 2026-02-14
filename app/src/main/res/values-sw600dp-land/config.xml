@@ -34,13 +34,13 @@
     <fraction name="config_key_vertical_gap">4.5%p</fraction>
     <fraction name="config_key_horizontal_gap">0.9%p</fraction>
 
-    <fraction name="config_key_letter_ratio_lxx">50%</fraction>
+    <fraction name="config_key_letter_ratio_lxx">47%</fraction>
     <dimen name="config_key_preview_width_lxx">90dp</dimen>
-    <fraction name="config_key_large_letter_ratio_lxx">60%</fraction>
-    <fraction name="config_key_label_ratio_lxx">32%</fraction>
-    <fraction name="config_key_hint_letter_ratio_lxx">23%</fraction>
-    <fraction name="config_key_hint_label_ratio_lxx">20%</fraction>
-    <fraction name="config_key_shifted_letter_hint_ratio_lxx">29%</fraction>
+    <fraction name="config_key_large_letter_ratio_lxx">56%</fraction>
+    <fraction name="config_key_label_ratio_lxx">30%</fraction>
+    <fraction name="config_key_hint_letter_ratio_lxx">21%</fraction>
+    <fraction name="config_key_hint_label_ratio_lxx">19%</fraction>
+    <fraction name="config_key_shifted_letter_hint_ratio_lxx">27%</fraction>
     <fraction name="config_language_on_spacebar_text_ratio">30.0%</fraction>
     <dimen name="config_key_shifted_letter_hint_padding">4dp</dimen>
 

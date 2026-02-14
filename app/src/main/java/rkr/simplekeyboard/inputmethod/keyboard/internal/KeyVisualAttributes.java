@@ -25,6 +25,8 @@ import rkr.simplekeyboard.inputmethod.R;
 import rkr.simplekeyboard.inputmethod.latin.utils.ResourceUtils;
 
 public final class KeyVisualAttributes {
+    private static final String KEY_FONT_FAMILY_INTER = "inter";
+
     public final Typeface mTypeface;
 
     public final float mLetterRatio;
@@ -96,8 +98,12 @@ public final class KeyVisualAttributes {
 
     private KeyVisualAttributes(final TypedArray keyAttr) {
         if (keyAttr.hasValue(R.styleable.Keyboard_Key_keyTypeface)) {
-            mTypeface = Typeface.defaultFromStyle(
-                    keyAttr.getInt(R.styleable.Keyboard_Key_keyTypeface, Typeface.NORMAL));
+            final int keyTypefaceStyle = keyAttr.getInt(
+                    R.styleable.Keyboard_Key_keyTypeface, Typeface.NORMAL);
+            final Typeface interTypeface = Typeface.create(KEY_FONT_FAMILY_INTER, keyTypefaceStyle);
+            mTypeface = (interTypeface != null)
+                    ? interTypeface
+                    : Typeface.defaultFromStyle(keyTypefaceStyle);
         } else {
             mTypeface = null;
         }

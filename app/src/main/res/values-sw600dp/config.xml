@@ -43,12 +43,12 @@
 
     <fraction name="config_key_preview_text_ratio">50%</fraction>
     <dimen name="config_key_preview_offset_lxx">65dp</dimen>
-    <fraction name="config_key_letter_ratio_lxx">50%</fraction>
-    <fraction name="config_key_large_letter_ratio_lxx">60%</fraction>
-    <fraction name="config_key_label_ratio_lxx">32%</fraction>
-    <fraction name="config_key_hint_letter_ratio_lxx">23%</fraction>
-    <fraction name="config_key_hint_label_ratio_lxx">20%</fraction>
-    <fraction name="config_key_shifted_letter_hint_ratio_lxx">22%</fraction>
+    <fraction name="config_key_letter_ratio_lxx">47%</fraction>
+    <fraction name="config_key_large_letter_ratio_lxx">56%</fraction>
+    <fraction name="config_key_label_ratio_lxx">30%</fraction>
+    <fraction name="config_key_hint_letter_ratio_lxx">21%</fraction>
+    <fraction name="config_key_hint_label_ratio_lxx">19%</fraction>
+    <fraction name="config_key_shifted_letter_hint_ratio_lxx">20%</fraction>
     <fraction name="config_language_on_spacebar_text_ratio">28.0%</fraction>
     <dimen name="config_key_hint_letter_padding">5dp</dimen>
     <dimen name="config_key_shifted_letter_hint_padding">3dp</dimen>

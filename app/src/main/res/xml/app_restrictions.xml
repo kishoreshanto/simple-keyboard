@@ -13,7 +13,7 @@
         android:title="@string/auto_cap"
         android:restrictionType="bool"
         android:description="@string/auto_cap_summary"
-        android:defaultValue="true" />
+        android:defaultValue="false" />
     <restriction
         android:key="pref_show_number_row"
         android:title="@string/show_number_row"
