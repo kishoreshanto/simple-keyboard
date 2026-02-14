@@ -309,6 +309,12 @@ public final class SubtypeLocaleUtils {
 
         final ArrayList<Subtype> subtypes = new ArrayList<>();
         final HashSet<Locale> addedLocales = new HashSet<>();
+        // Always seed with English (US) as the primary default subtype.
+        final Subtype englishUsSubtype = getDefaultSubtype(LOCALE_ENGLISH_UNITED_STATES, resources);
+        if (englishUsSubtype != null) {
+            subtypes.add(englishUsSubtype);
+            addedLocales.add(LocaleUtils.constructLocaleFromString(LOCALE_ENGLISH_UNITED_STATES));
+        }
         for (final Locale systemLocale : systemLocales) {
             final Locale bestLocale = LocaleUtils.findBestLocale(systemLocale, supportedLocales);
             if (bestLocale != null && !addedLocales.contains(bestLocale)) {

@@ -19,6 +19,9 @@
 -->
 
 <resources>
-    <style name="platformSettingsTheme" parent="@android:style/Theme.Material.Light" />
-    <style name="platformDialogTheme" parent="@android:style/Theme.DeviceDefault.Light.Dialog" />
+    <style name="platformSettingsTheme" parent="@android:style/Theme.DeviceDefault.Settings">
+        <item name="android:windowBackground">@android:color/background_light</item>
+        <item name="android:listViewStyle">@android:style/Widget.DeviceDefault.ListView</item>
+    </style>
+    <style name="platformDialogTheme" parent="@android:style/Theme.DeviceDefault.Light.Dialog.Alert" />
 </resources>

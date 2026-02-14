@@ -18,24 +18,29 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:latin="http://schemas.android.com/apk/res-auto"
     android:key="screen_appearance"
-    android:title="@string/settings_screen_appearance">
-    <PreferenceScreen
-        android:fragment="rkr.simplekeyboard.inputmethod.latin.settings.ThemeSettingsFragment"
-        android:key="screen_theme"
-        android:title="@string/settings_screen_theme" />
-    <rkr.simplekeyboard.inputmethod.latin.settings.ColorDialogPreference
-        android:key="pref_keyboard_color"
-        android:title="@string/keyboard_color" />
-    <rkr.simplekeyboard.inputmethod.latin.settings.SeekBarDialogPreference
-        android:key="pref_keyboard_height"
-        android:title="@string/prefs_keyboard_height_settings"
-        latin:minValue="@integer/config_min_keyboar_height"
-        latin:maxValue="@integer/config_max_keyboar_height"
-        latin:stepValue="@integer/config_keyboar_height_step" />
-    <rkr.simplekeyboard.inputmethod.latin.settings.SeekBarDialogPreference
-        android:key="pref_bottom_offset_portrait"
-        android:title="@string/prefs_bottom_offset_portrait_settings"
-        latin:minValue="@integer/config_min_bottom_offset_portrait"
-        latin:maxValue="@integer/config_max_bottom_offset_portrait"
-        latin:stepValue="@integer/config_bottom_offset_step" />
+    android:title="@string/settings_screen_appearance"
+    android:orderingFromXml="true">
+    <PreferenceCategory android:title="Theme">
+        <PreferenceScreen
+            android:fragment="rkr.simplekeyboard.inputmethod.latin.settings.ThemeSettingsFragment"
+            android:key="screen_theme"
+            android:title="@string/settings_screen_theme" />
+        <rkr.simplekeyboard.inputmethod.latin.settings.ColorDialogPreference
+            android:key="pref_keyboard_color"
+            android:title="@string/keyboard_color" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Size &amp; Position">
+        <rkr.simplekeyboard.inputmethod.latin.settings.SeekBarDialogPreference
+            android:key="pref_keyboard_height"
+            android:title="@string/prefs_keyboard_height_settings"
+            latin:minValue="@integer/config_min_keyboar_height"
+            latin:maxValue="@integer/config_max_keyboar_height"
+            latin:stepValue="@integer/config_keyboar_height_step" />
+        <rkr.simplekeyboard.inputmethod.latin.settings.SeekBarDialogPreference
+            android:key="pref_bottom_offset_portrait"
+            android:title="@string/prefs_bottom_offset_portrait_settings"
+            latin:minValue="@integer/config_min_bottom_offset_portrait"
+            latin:maxValue="@integer/config_max_bottom_offset_portrait"
+            latin:stepValue="@integer/config_bottom_offset_step" />
+    </PreferenceCategory>
 </PreferenceScreen>

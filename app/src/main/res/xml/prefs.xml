@@ -15,23 +15,39 @@
 -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    android:key="english_ime_settings">
-    <PreferenceScreen
-        android:fragment="rkr.simplekeyboard.inputmethod.latin.settings.PreferencesSettingsFragment"
-        android:title="@string/settings_screen_preferences"
-        android:key="screen_preferences" />
-    <PreferenceScreen
-        android:fragment="rkr.simplekeyboard.inputmethod.latin.settings.KeyPressSettingsFragment"
-        android:title="@string/settings_screen_key_press"
-        android:key="screen_key_press" />
-    <PreferenceScreen
-        android:fragment="rkr.simplekeyboard.inputmethod.latin.settings.AppearanceSettingsFragment"
-        android:title="@string/settings_screen_appearance"
-        android:key="screen_appearance" />
+    android:key="english_ime_settings"
+    android:orderingFromXml="true">
+    <PreferenceCategory
+        android:title="@string/english_ime_name">
+        <PreferenceScreen
+            android:fragment="rkr.simplekeyboard.inputmethod.latin.settings.PreferencesSettingsFragment"
+            android:title="@string/settings_screen_preferences"
+            android:summary="Typing, layout and gesture options"
+            android:icon="@android:drawable/ic_menu_manage"
+            android:key="screen_preferences" />
+        <PreferenceScreen
+            android:fragment="rkr.simplekeyboard.inputmethod.latin.settings.KeyPressSettingsFragment"
+            android:title="@string/settings_screen_key_press"
+            android:summary="Vibration, sound and long-press behavior"
+            android:icon="@android:drawable/ic_lock_silent_mode_off"
+            android:key="screen_key_press" />
+        <PreferenceScreen
+            android:fragment="rkr.simplekeyboard.inputmethod.latin.settings.AppearanceSettingsFragment"
+            android:title="@string/settings_screen_appearance"
+            android:summary="Theme, colors, height and offsets"
+            android:icon="@android:drawable/ic_menu_edit"
+            android:key="screen_appearance" />
+    </PreferenceCategory>
     <Preference
         android:title="@string/privacy_policy"
-        android:key="privacy_policy" />
+        android:key="privacy_policy"
+        android:layout="@layout/preference_hidden"
+        android:enabled="false"
+        android:selectable="false" />
     <Preference
         android:title="@string/license"
-        android:key="license" />
+        android:key="license"
+        android:layout="@layout/preference_hidden"
+        android:enabled="false"
+        android:selectable="false" />
 </PreferenceScreen>
