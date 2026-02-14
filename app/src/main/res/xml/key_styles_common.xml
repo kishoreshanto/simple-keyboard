@@ -128,6 +128,10 @@
         latin:keySpec="!text/keylabel_to_symbol|!code/key_switch_alpha_symbol"
         latin:parentStyle="baseForLayoutSwitchKeyStyle" />
     <key-style
+        latin:styleName="toSymbolHighlightedKeyStyle"
+        latin:backgroundType="stickyOn"
+        latin:parentStyle="toSymbolKeyStyle" />
+    <key-style
         latin:styleName="toAlphaKeyStyle"
         latin:keySpec="!text/keylabel_to_alpha|!code/key_switch_alpha_symbol"
         latin:parentStyle="baseForLayoutSwitchKeyStyle" />
@@ -139,4 +143,8 @@
         latin:styleName="backFromMoreSymbolKeyStyle"
         latin:keySpec="!text/keylabel_to_symbol|!code/key_shift"
         latin:parentStyle="baseForLayoutSwitchKeyStyle" />
+    <key-style
+        latin:styleName="roundedEnterKeyStyle"
+        latin:backgroundType="action"
+        latin:parentStyle="enterKeyStyle" />
 </merge>

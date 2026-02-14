@@ -17,17 +17,17 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Action keys. -->
     <item android:state_active="true" android:state_pressed="true"
-          android:drawable="@drawable/btn_keyboard_key_pressed_border" />
+          android:drawable="@drawable/btn_keyboard_key_action_pressed_border" />
     <item android:state_active="true"
-          android:drawable="@drawable/btn_keyboard_key_normal_border" />
+          android:drawable="@drawable/btn_keyboard_key_action_normal_border" />
 
     <!-- Toggle keys. Use checkable/checked state. -->
     <item android:state_checkable="true" android:state_checked="true" android:state_pressed="true"
-          android:drawable="@drawable/btn_keyboard_key_normal_border" />
+          android:drawable="@drawable/btn_keyboard_key_highlight_pressed_border" />
     <item android:state_checkable="true" android:state_pressed="true"
           android:drawable="@drawable/btn_keyboard_key_pressed_border" />
     <item android:state_checkable="true" android:state_checked="true"
-          android:drawable="@drawable/btn_keyboard_key_pressed_border" />
+          android:drawable="@drawable/btn_keyboard_key_highlight_normal_border" />
     <item android:state_checkable="true"
           android:drawable="@drawable/btn_keyboard_key_normal_border" />
 
