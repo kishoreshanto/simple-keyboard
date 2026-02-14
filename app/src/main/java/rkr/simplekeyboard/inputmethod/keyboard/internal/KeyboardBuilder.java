@@ -281,7 +281,7 @@ public class KeyboardBuilder<KP extends KeyboardParams> {
             params.mDefaultRowHeight = ResourceUtils.getDimensionOrFraction(keyboardAttr,
                     R.styleable.Keyboard_rowHeight, baseHeight, baseHeight / DEFAULT_KEYBOARD_ROWS);
 
-            params.mKeyVisualAttributes = KeyVisualAttributes.newInstance(keyAttr);
+            params.mKeyVisualAttributes = KeyVisualAttributes.newInstance(keyAttr, mContext);
 
             params.mMoreKeysTemplate = keyboardAttr.getResourceId(
                     R.styleable.Keyboard_moreKeysTemplate, 0);

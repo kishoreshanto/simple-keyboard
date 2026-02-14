@@ -17,15 +17,18 @@
 
 package rkr.simplekeyboard.inputmethod.keyboard.internal;
 
+import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.util.SparseIntArray;
 
 import rkr.simplekeyboard.inputmethod.R;
 import rkr.simplekeyboard.inputmethod.latin.utils.ResourceUtils;
 
 public final class KeyVisualAttributes {
-    private static final String KEY_FONT_FAMILY_INTER = "inter";
+    private static final Object TYPEFACE_LOCK = new Object();
+    private static Typeface sGoogleSansTypeface;
 
     public final Typeface mTypeface;
 
@@ -85,24 +88,46 @@ public final class KeyVisualAttributes {
     }
 
     public static KeyVisualAttributes newInstance(final TypedArray keyAttr) {
+        return newInstance(keyAttr, null);
+    }
+
+    public static KeyVisualAttributes newInstance(final TypedArray keyAttr,
+            final Context context) {
         final int indexCount = keyAttr.getIndexCount();
         for (int i = 0; i < indexCount; i++) {
             final int attrId = keyAttr.getIndex(i);
             if (sVisualAttributeIds.get(attrId, ATTR_NOT_FOUND) == ATTR_NOT_FOUND) {
                 continue;
             }
-            return new KeyVisualAttributes(keyAttr);
+            return new KeyVisualAttributes(keyAttr, context);
         }
         return null;
     }
 
-    private KeyVisualAttributes(final TypedArray keyAttr) {
+    private static Typeface getGoogleSansTypeface(final Context context) {
+        synchronized (TYPEFACE_LOCK) {
+            if (sGoogleSansTypeface != null) {
+                return sGoogleSansTypeface;
+            }
+            if (context == null || Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                return null;
+            }
+            try {
+                sGoogleSansTypeface = context.getResources().getFont(R.font.google_sans_regular);
+            } catch (final RuntimeException e) {
+                sGoogleSansTypeface = null;
+            }
+            return sGoogleSansTypeface;
+        }
+    }
+
+    private KeyVisualAttributes(final TypedArray keyAttr, final Context context) {
         if (keyAttr.hasValue(R.styleable.Keyboard_Key_keyTypeface)) {
             final int keyTypefaceStyle = keyAttr.getInt(
                     R.styleable.Keyboard_Key_keyTypeface, Typeface.NORMAL);
-            final Typeface interTypeface = Typeface.create(KEY_FONT_FAMILY_INTER, keyTypefaceStyle);
-            mTypeface = (interTypeface != null)
-                    ? interTypeface
+            final Typeface googleSansTypeface = getGoogleSansTypeface(context);
+            mTypeface = (googleSansTypeface != null)
+                    ? Typeface.create(googleSansTypeface, keyTypefaceStyle)
                     : Typeface.defaultFromStyle(keyTypefaceStyle);
         } else {
             mTypeface = null;
