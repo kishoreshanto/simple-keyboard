@@ -28,12 +28,14 @@ import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
+\import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 
 import java.util.HashSet;
+import java.util.WeakHashMap;
 
 import rkr.simplekeyboard.inputmethod.R;
 import rkr.simplekeyboard.inputmethod.compat.PreferenceManagerCompat;
@@ -114,6 +116,13 @@ public class KeyboardView extends View {
     private final Canvas mOffscreenCanvas = new Canvas();
     private final Paint mPaint = new Paint();
     private final Paint.FontMetrics mFontMetrics = new Paint.FontMetrics();
+    private final Paint mMoreKeysPressedBackgroundPaint = new Paint();
+    private final RectF mMoreKeysPressedBackgroundRect = new RectF();
+    private final WeakHashMap<Key, Float> mMoreKeysSelectionProgressMap = new WeakHashMap<>();
+    private final WeakHashMap<Key, Float> mMoreKeysLabelScaleMap = new WeakHashMap<>();
+    private static final float MORE_KEYS_LABEL_PRESSED_SCALE = 1.5f;
+    private static final float MORE_KEYS_LABEL_ANIM_STEP = 0.22f;
+    private static final float MORE_KEYS_SELECTION_ANIM_STEP = 0.28f;
 
     public KeyboardView(final Context context, final AttributeSet attrs) {
         this(context, attrs, R.attr.keyboardViewStyle);
@@ -150,6 +159,7 @@ public class KeyboardView extends View {
         keyAttr.recycle();
 
         mPaint.setAntiAlias(true);
+        mMoreKeysPressedBackgroundPaint.setAntiAlias(true);
     }
 
     private static void blendAlpha(final Paint paint, final int alpha) {
@@ -329,6 +339,28 @@ public class KeyboardView extends View {
     // Draw key background.
     protected void onDrawKeyBackground(final Key key, final Canvas canvas,
             final Drawable background) {
+        final Keyboard keyboard = getKeyboard();
+        if (keyboard != null && keyboard.getClass() == MoreKeysKeyboard.class) {
+            final float selectionProgress = getMoreKeysAnimatedSelectionProgress(key, key.isPressed());
+            if (selectionProgress <= 0.0f) {
+                return;
+            }
+            final int keyWidth = key.getWidth();
+            final int keyHeight = key.getHeight();
+            final int selectedColor = getMoreKeysSelectedBackgroundColor();
+            final int selectedAlpha = Math.round(Color.alpha(selectedColor) * selectionProgress);
+            mMoreKeysPressedBackgroundPaint.setColor(Color.argb(
+                    selectedAlpha,
+                    Color.red(selectedColor),
+                    Color.green(selectedColor),
+                    Color.blue(selectedColor)));
+            mMoreKeysPressedBackgroundRect.set(0.0f, 0.0f, keyWidth, keyHeight);
+            final float radius = getResources().getDimension(R.dimen.button_corner_radius_full_lxx);
+            canvas.drawRoundRect(mMoreKeysPressedBackgroundRect, radius, radius,
+                    mMoreKeysPressedBackgroundPaint);
+            return;
+        }
+
         final int keyWidth = key.getWidth();
         final int keyHeight = key.getHeight();
         final Rect padding = mKeyBackgroundPadding;
@@ -352,9 +384,22 @@ public class KeyboardView extends View {
         final int keyHeight = key.getHeight();
         final float centerX = keyWidth * 0.5f;
         final float centerY = keyHeight * 0.5f;
+        final Keyboard keyboard = getKeyboard();
+        final boolean isMoreKeysKeyboard = keyboard != null
+                && keyboard.getClass() == MoreKeysKeyboard.class;
+        final float selectionProgress = isMoreKeysKeyboard
+            ? getCurrentMoreKeysSelectionProgress(key, key.isPressed()) : 0.0f;
+        final boolean isMoreKeysPressed = isMoreKeysKeyboard && selectionProgress >= 0.5f;
+
+        if (isMoreKeysKeyboard) {
+            final float scale = getMoreKeysAnimatedLabelScale(key, isMoreKeysPressed);
+            if (scale != 1.0f) {
+                canvas.save();
+                canvas.scale(scale, scale, centerX, centerY);
+            }
+        }
 
         // Draw key label.
-        final Keyboard keyboard = getKeyboard();
         final Drawable icon = (keyboard == null) ? null
                 : key.getIcon(keyboard.mIconsSet, params.mAnimAlpha);
         float labelX = centerX;
@@ -389,7 +434,11 @@ public class KeyboardView extends View {
                 }
             }
 
-            paint.setColor(key.selectTextColor(params));
+            if (isMoreKeysPressed) {
+                paint.setColor(getContrastTextColorForBackground(getMoreKeysSelectedBackgroundColor()));
+            } else {
+                paint.setColor(key.selectTextColor(params));
+            }
             // Set a drop shadow for the text if the shadow radius is positive value.
             if (mKeyTextShadowRadius > 0.0f) {
                 paint.setShadowLayer(mKeyTextShadowRadius, 0.0f, 0.0f, params.mTextShadowColor);
@@ -408,7 +457,11 @@ public class KeyboardView extends View {
         final String hintLabel = key.getHintLabel();
         if (hintLabel != null) {
             paint.setTextSize(key.selectHintTextSize(params));
-            paint.setColor(key.selectHintTextColor(params));
+            if (isMoreKeysPressed) {
+                paint.setColor(getContrastTextColorForBackground(getMoreKeysSelectedBackgroundColor()));
+            } else {
+                paint.setColor(key.selectHintTextColor(params));
+            }
             // TODO: Should add a way to specify type face for hint letters
             paint.setTypeface(Typeface.DEFAULT_BOLD);
             blendAlpha(paint, params.mAnimAlpha);
@@ -458,6 +511,79 @@ public class KeyboardView extends View {
             final int iconX = (keyWidth - iconWidth) / 2; // Align horizontally center.
             drawIcon(canvas, icon, iconX, iconY, iconWidth, iconHeight);
         }
+
+        if (isMoreKeysKeyboard) {
+            final Float scale = mMoreKeysLabelScaleMap.get(key);
+            if (scale != null && scale != 1.0f) {
+                canvas.restore();
+            }
+        }
+    }
+
+    private int getMoreKeysSelectedBackgroundColor() {
+        if (mTheme != null && mTheme.mCustomColorSupport) {
+            return Color.argb(Constants.Color.ALPHA_OPAQUE,
+                    Color.red(mCustomColor), Color.green(mCustomColor), Color.blue(mCustomColor));
+        }
+        final int fallback = mKeyDrawParams.mFunctionalTextColor;
+        return Color.argb(Constants.Color.ALPHA_OPAQUE,
+                Color.red(fallback), Color.green(fallback), Color.blue(fallback));
+    }
+
+    private static int getContrastTextColorForBackground(final int backgroundColor) {
+        final int red = Color.red(backgroundColor);
+        final int green = Color.green(backgroundColor);
+        final int blue = Color.blue(backgroundColor);
+        final double luminance = (0.299 * red) + (0.587 * green) + (0.114 * blue);
+        return luminance >= 160.0 ? Color.BLACK : Color.WHITE;
+    }
+
+    private float getMoreKeysAnimatedLabelScale(final Key key, final boolean pressed) {
+        final float targetScale = pressed ? MORE_KEYS_LABEL_PRESSED_SCALE : 1.0f;
+        final Float currentValue = mMoreKeysLabelScaleMap.get(key);
+        float currentScale = (currentValue != null) ? currentValue : 1.0f;
+
+        if (Math.abs(targetScale - currentScale) < 0.01f) {
+            currentScale = targetScale;
+        } else {
+            currentScale += (targetScale - currentScale) * MORE_KEYS_LABEL_ANIM_STEP;
+            invalidateKey(key);
+        }
+
+        if (!pressed && currentScale == 1.0f) {
+            mMoreKeysLabelScaleMap.remove(key);
+        } else {
+            mMoreKeysLabelScaleMap.put(key, currentScale);
+        }
+        return currentScale;
+    }
+
+    private float getCurrentMoreKeysSelectionProgress(final Key key, final boolean pressed) {
+        final Float currentValue = mMoreKeysSelectionProgressMap.get(key);
+        if (currentValue != null) {
+            return currentValue;
+        }
+        return pressed ? 1.0f : 0.0f;
+    }
+
+    private float getMoreKeysAnimatedSelectionProgress(final Key key, final boolean pressed) {
+        final float targetProgress = pressed ? 1.0f : 0.0f;
+        final Float currentValue = mMoreKeysSelectionProgressMap.get(key);
+        float currentProgress = (currentValue != null) ? currentValue : 0.0f;
+
+        if (Math.abs(targetProgress - currentProgress) < 0.01f) {
+            currentProgress = targetProgress;
+        } else {
+            currentProgress += (targetProgress - currentProgress) * MORE_KEYS_SELECTION_ANIM_STEP;
+            invalidateKey(key);
+        }
+
+        if (!pressed && currentProgress == 0.0f) {
+            mMoreKeysSelectionProgressMap.remove(key);
+        } else {
+            mMoreKeysSelectionProgressMap.put(key, currentProgress);
+        }
+        return currentProgress;
     }
 
     protected static void drawIcon(final Canvas canvas, final Drawable icon,
