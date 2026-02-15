@@ -28,6 +28,7 @@
             <Key
                 latin:keySpec="q"
                 latin:moreKeys="!text/morekeys_q,%"
+                latin:keyLabelFlags="hasPopupHint"
                 latin:backgroundType="normal"
                 latin:keyStyle="settingsMoreKeysStyle" />
         </case>
@@ -48,7 +49,6 @@
         <default>
             <Key
                 latin:keySpec="!text/keyspec_comma"
-                latin:keyLabelFlags="hasPopupHint"
                 latin:keyStyle="settingsMoreKeysStyle" />
         </default>
     </switch>

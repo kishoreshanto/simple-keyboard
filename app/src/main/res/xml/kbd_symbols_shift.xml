@@ -22,14 +22,15 @@
     <case latin:languageCode="fa|ur">
         <!-- The farsi, and urdu keyboards currently don't support a
              separate number row. -->
-        <Keyboard>
+        <Keyboard latin:rowHeight="25.5%p">
             <include
                 latin:keyboardLayout="@xml/rows_symbols_shift" />
         </Keyboard>
     </case>
     <case latin:showNumberRow="true">
         <Keyboard
-            latin:bonusHeight="@fraction/config_key_bonus_height_5row">
+            latin:bonusHeight="@fraction/config_key_bonus_height_5row"
+            latin:rowHeight="25.5%p">
             <include
                 latin:keyboardLayout="@xml/rows_symbols_shift" />
         </Keyboard>
@@ -37,13 +38,14 @@
     <case latin:languageCode="hy|km|lo|th">
         <!-- The armenian_phonetic, khmer, lao, and thai keyboards always have 5 rows. -->
         <Keyboard
-            latin:bonusHeight="@fraction/config_key_bonus_height_5row">
+            latin:bonusHeight="@fraction/config_key_bonus_height_5row"
+            latin:rowHeight="25.5%p">
             <include
                 latin:keyboardLayout="@xml/rows_symbols_shift" />
         </Keyboard>
     </case>
     <default>
-        <Keyboard>
+        <Keyboard latin:rowHeight="25.5%p">
             <include
                 latin:keyboardLayout="@xml/rows_symbols_shift" />
         </Keyboard>

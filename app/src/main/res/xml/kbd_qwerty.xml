@@ -30,8 +30,11 @@
         </Keyboard>
     </case>
     <default>
-        <Keyboard>
+        <Keyboard
+            latin:verticalGap="@fraction/config_key_vertical_gap_5row"
+            latin:rowHeight="22%p">
             <include latin:keyboardLayout="@xml/key_styles_common" />
+            <include latin:keyboardLayout="@xml/row_qwerty_actions" />
             <include latin:keyboardLayout="@xml/rows_qwerty" />
         </Keyboard>
     </default>

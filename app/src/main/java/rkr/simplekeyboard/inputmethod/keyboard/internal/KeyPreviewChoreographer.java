@@ -96,6 +96,25 @@ public final class KeyPreviewChoreographer {
         mFreeKeyPreviewViews.add(keyPreviewView);
     }
 
+    public void dismissAllKeyPreviews() {
+        while (!mShowingKeyPreviewViews.isEmpty()) {
+            final Key key = mShowingKeyPreviewViews.keySet().iterator().next();
+            dismissKeyPreview(key, false /* withAnimation */);
+        }
+        for (final KeyPreviewView keyPreviewView : mFreeKeyPreviewViews) {
+            final Object tag = keyPreviewView.getTag();
+            if (tag instanceof Animator) {
+                ((Animator)tag).cancel();
+            }
+            keyPreviewView.setTag(null);
+            keyPreviewView.animate().cancel();
+            keyPreviewView.clearAnimation();
+            keyPreviewView.setScaleX(1.0f);
+            keyPreviewView.setScaleY(1.0f);
+            keyPreviewView.setVisibility(View.INVISIBLE);
+        }
+    }
+
     public void placeAndShowKeyPreview(final Key key, final KeyboardIconsSet iconsSet,
             final KeyDrawParams drawParams, final int[] keyboardOrigin,
             final ViewGroup placerView, final boolean withAnimation,

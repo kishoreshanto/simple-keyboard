@@ -522,6 +522,7 @@ public final class MainKeyboardView extends KeyboardView implements MoreKeysPane
 
     @Override
     public void onDismissMoreKeysPanel() {
+        mKeyPreviewChoreographer.dismissAllKeyPreviews();
         if (isShowingMoreKeysPanel()) {
             mMoreKeysPanel.removeFromParent();
             mMoreKeysPanel = null;
