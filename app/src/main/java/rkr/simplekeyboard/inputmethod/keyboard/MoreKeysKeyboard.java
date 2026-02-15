@@ -360,7 +360,8 @@ public final class MoreKeysKeyboard extends Keyboard {
                         ? defaultKeyWidth * LABEL_PADDING_RATIO : 0.0f);
                 keyPaddedWidth = getMaxKeyWidth(key, defaultKeyWidth, padding, paintToMeasure)
                         + mParams.mHorizontalGap;
-                rowHeight = keyboard.mMostCommonKeyHeight + keyboard.mVerticalGap;
+                // Keep popup keys close to square without changing horizontal sizing.
+                rowHeight = keyPaddedWidth + mParams.mVerticalGap;
             }
             final MoreKeySpec[] moreKeys = key.getMoreKeys();
             mParams.setParameters(moreKeys.length, key.getMoreKeysColumnNumber(), keyPaddedWidth,

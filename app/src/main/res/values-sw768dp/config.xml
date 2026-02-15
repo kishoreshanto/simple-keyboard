@@ -33,8 +33,8 @@
     <fraction name="config_key_vertical_gap">3.312%p</fraction>
     <fraction name="config_key_horizontal_gap">1.066%p</fraction>
 
-    <dimen name="config_more_keys_keyboard_key_height">63.0dp</dimen>
-    <dimen name="config_more_keys_keyboard_key_horizontal_padding">12dp</dimen>
+    <dimen name="config_more_keys_keyboard_key_height">46.0dp</dimen>
+    <dimen name="config_more_keys_keyboard_key_horizontal_padding">14dp</dimen>
     <!-- Amount of allowance for selecting keys in a mini popup keyboard by sliding finger. -->
     <!-- config_more_keys_keyboard_key_height x 1.2 -->
     <dimen name="config_more_keys_keyboard_slide_allowance">98.3dp</dimen>

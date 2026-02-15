@@ -32,7 +32,7 @@
     <fraction name="config_key_vertical_gap">3.690%p</fraction>
     <fraction name="config_key_horizontal_gap">1.030%p</fraction>
 
-    <dimen name="config_more_keys_keyboard_key_height">81.9dp</dimen>
+    <dimen name="config_more_keys_keyboard_key_height">72.0dp</dimen>
 
     <fraction name="config_key_letter_ratio_lxx">50%</fraction>
     <dimen name="config_key_preview_offset_lxx">75dp</dimen>
