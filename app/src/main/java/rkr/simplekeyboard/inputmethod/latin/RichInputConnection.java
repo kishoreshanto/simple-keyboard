@@ -293,9 +293,31 @@ public final class RichInputConnection {
     }
 
     public int getCodePointBeforeCursor() {
-        final int length = mTextBeforeCursor.length();
-        if (length < 1) return Constants.NOT_A_CODE;
-        return Character.codePointBefore(mTextBeforeCursor, length);
+        return getCodePointBeforeCursor(1);
+    }
+
+    public int getCodePointBeforeCursor(final int offsetFromCursor) {
+        if (offsetFromCursor <= 0) {
+            return Constants.NOT_A_CODE;
+        }
+
+        int index = mTextBeforeCursor.length();
+        int codePoint = Constants.NOT_A_CODE;
+        for (int i = 0; i < offsetFromCursor; i++) {
+            if (index < 1) {
+                return Constants.NOT_A_CODE;
+            }
+            codePoint = Character.codePointBefore(mTextBeforeCursor, index);
+            index -= Character.charCount(codePoint);
+        }
+        return codePoint;
+    }
+
+    public int getCodePointAfterCursor() {
+        if (mTextAfterCursor.isEmpty()) {
+            return Constants.NOT_A_CODE;
+        }
+        return Character.codePointAt(mTextAfterCursor, 0);
     }
 
     public void replaceText(final int startPosition, final int endPosition, CharSequence text) {

@@ -651,6 +651,15 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
         return mLocale;
     }
 
+    public void resetKeyboardStateToAlphabet() {
+        if (!mKeyboardSwitcher.isShowingKeyboardId(KeyboardId.ELEMENT_SYMBOLS,
+                KeyboardId.ELEMENT_SYMBOLS_SHIFTED)) {
+            return;
+        }
+        mKeyboardSwitcher.resetKeyboardStateToAlphabet(getCurrentAutoCapsState(),
+                getCurrentRecapitalizeState());
+    }
+
     @Override
     public void onMoveCursorPointer(int steps) {
         if (mInputLogic.mConnection.hasCursorPosition()) {

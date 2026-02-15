@@ -42,6 +42,10 @@ import rkr.simplekeyboard.inputmethod.latin.utils.SubtypeLocaleUtils;
  * This class manages the input logic.
  */
 public final class InputLogic {
+    private static final int CODE_SEMICOLON = ';';
+    private static final int CODE_COLON = ':';
+    private static final int CODE_RIGHT_SINGLE_QUOTE = 0x2019;
+
     // TODO : Remove this member when we can.
     final LatinIME mLatinIME;
 
@@ -282,6 +286,8 @@ public final class InputLogic {
         } else {
             handleNonSeparatorEvent(event);
         }
+
+        maybeSwitchToAlphabetAfterApostrophe(inputTransaction.mSettingsValues, codePoint);
     }
 
     /**
@@ -298,9 +304,103 @@ public final class InputLogic {
      * @param inputTransaction The transaction in progress.
      */
     private void handleSeparatorEvent(final Event event, final InputTransaction inputTransaction) {
-        sendKeyCodePoint(event.mCodePoint);
+        final SettingsValues settingsValues = inputTransaction.mSettingsValues;
+        if (tryPerformDoubleSpacePeriod(settingsValues, event.mCodePoint)) {
+            inputTransaction.requireShiftUpdate(InputTransaction.SHIFT_UPDATE_NOW);
+            return;
+        }
+
+        if (shouldInsertAutoSpaceAfterPunctuation(settingsValues, event.mCodePoint)) {
+            final String text = StringUtils.newSingleCodePointString(event.mCodePoint)
+                    + StringUtils.newSingleCodePointString(Constants.CODE_SPACE);
+            mConnection.commitText(text, 1);
+        } else {
+            sendKeyCodePoint(event.mCodePoint);
+        }
 
         inputTransaction.requireShiftUpdate(InputTransaction.SHIFT_UPDATE_NOW);
+    }
+
+    private boolean tryPerformDoubleSpacePeriod(final SettingsValues settingsValues,
+            final int codePoint) {
+        if (!settingsValues.mDoubleSpacePeriod || codePoint != Constants.CODE_SPACE
+                || mConnection.hasSelection()) {
+            return false;
+        }
+
+        final int codePointBeforeCursor = mConnection.getCodePointBeforeCursor();
+        if (codePointBeforeCursor != Constants.CODE_SPACE) {
+            return false;
+        }
+
+        final int codePointBeforePreviousSpace = mConnection.getCodePointBeforeCursor(2);
+        if (codePointBeforePreviousSpace == Constants.NOT_A_CODE
+                || Character.isWhitespace(codePointBeforePreviousSpace)
+                || settingsValues.isWordSeparator(codePointBeforePreviousSpace)) {
+            return false;
+        }
+
+        final int codePointAfterCursor = mConnection.getCodePointAfterCursor();
+        if (codePointAfterCursor != Constants.NOT_A_CODE
+                && !Character.isWhitespace(codePointAfterCursor)) {
+            return false;
+        }
+
+        mConnection.deleteTextBeforeCursor(1);
+        mConnection.commitText(
+                StringUtils.newSingleCodePointString(Constants.CODE_PERIOD)
+                        + StringUtils.newSingleCodePointString(Constants.CODE_SPACE), 1);
+        return true;
+    }
+
+    private boolean shouldInsertAutoSpaceAfterPunctuation(final SettingsValues settingsValues,
+            final int codePoint) {
+        if (!isAutoSpacePunctuation(codePoint)
+                || mConnection.hasSelection()) {
+            return false;
+        }
+        if (!settingsValues.mAutoSpaceAfterPunctuation && !isCommaOrPeriod(codePoint)) {
+            return false;
+        }
+
+        final int codePointBeforeCursor = mConnection.getCodePointBeforeCursor();
+        if (codePointBeforeCursor == Constants.NOT_A_CODE
+                || Character.isWhitespace(codePointBeforeCursor)
+                || settingsValues.isWordSeparator(codePointBeforeCursor)) {
+            return false;
+        }
+
+        final int codePointAfterCursor = mConnection.getCodePointAfterCursor();
+        if (codePointAfterCursor != Constants.NOT_A_CODE
+                && Character.isWhitespace(codePointAfterCursor)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private static boolean isAutoSpacePunctuation(final int codePoint) {
+        return codePoint == Constants.CODE_COMMA
+                || codePoint == Constants.CODE_PERIOD
+                || codePoint == CODE_SEMICOLON
+                || codePoint == CODE_COLON
+                || codePoint == '!'
+                || codePoint == '?';
+    }
+
+    private static boolean isCommaOrPeriod(final int codePoint) {
+        return codePoint == Constants.CODE_COMMA || codePoint == Constants.CODE_PERIOD;
+    }
+
+    private void maybeSwitchToAlphabetAfterApostrophe(final SettingsValues settingsValues,
+            final int codePoint) {
+        if (!settingsValues.mAutoSwitchToAlphaAfterApostrophe) {
+            return;
+        }
+        if (codePoint != Constants.CODE_SINGLE_QUOTE && codePoint != CODE_RIGHT_SINGLE_QUOTE) {
+            return;
+        }
+        mLatinIME.resetKeyboardStateToAlphabet();
     }
 
     /**

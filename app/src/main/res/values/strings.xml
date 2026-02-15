@@ -45,6 +45,12 @@
     <string name="auto_cap">Auto-capitalization</string>
     <!-- Description for option to enable auto capitalization of sentences -->
     <string name="auto_cap_summary">Capitalize the first word of each sentence</string>
+    <string name="double_space_period">Double-space full stop</string>
+    <string name="double_space_period_summary">Double tap space to insert a period and a space</string>
+    <string name="auto_space_after_punctuation">Auto-space after punctuation</string>
+    <string name="auto_space_after_punctuation_summary">Insert a space automatically after punctuation marks</string>
+    <string name="auto_switch_to_alpha_after_apostrophe">Auto-switch after apostrophe</string>
+    <string name="auto_switch_to_alpha_after_apostrophe_summary">Switch back to the letter keyboard after typing an apostrophe</string>
 
     <!-- Preference for input language selection -->
     <string name="select_language">Languages</string>

@@ -25,6 +25,21 @@
             android:defaultValue="false"
             android:persistent="true" />
         <SwitchPreference
+            android:key="pref_double_space_period"
+            android:title="@string/double_space_period"
+            android:summary="@string/double_space_period_summary"
+            android:defaultValue="true" />
+        <SwitchPreference
+            android:key="pref_auto_space_after_punctuation"
+            android:title="@string/auto_space_after_punctuation"
+            android:summary="@string/auto_space_after_punctuation_summary"
+            android:defaultValue="true" />
+        <SwitchPreference
+            android:key="pref_auto_switch_to_alpha_after_apostrophe"
+            android:title="@string/auto_switch_to_alpha_after_apostrophe"
+            android:summary="@string/auto_switch_to_alpha_after_apostrophe_summary"
+            android:defaultValue="true" />
+        <SwitchPreference
             android:key="pref_show_special_chars"
             android:title="@string/show_special_chars"
             android:defaultValue="true" />

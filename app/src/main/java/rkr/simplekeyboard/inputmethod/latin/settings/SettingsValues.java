@@ -49,6 +49,9 @@ public class SettingsValues {
     public final boolean mShowNumberRow;
     public final boolean mSpaceSwipeEnabled;
     public final boolean mDeleteSwipeEnabled;
+    public final boolean mDoubleSpacePeriod;
+    public final boolean mAutoSpaceAfterPunctuation;
+    public final boolean mAutoSwitchToAlphaAfterApostrophe;
 
     // From the input box
     public final InputAttributes mInputAttributes;
@@ -91,6 +94,9 @@ public class SettingsValues {
         mShowNumberRow = Settings.readShowNumberRow(prefs);
         mSpaceSwipeEnabled = Settings.readSpaceSwipeEnabled(prefs);
         mDeleteSwipeEnabled = Settings.readDeleteSwipeEnabled(prefs);
+        mDoubleSpacePeriod = Settings.readDoubleSpacePeriod(prefs);
+        mAutoSpaceAfterPunctuation = Settings.readAutoSpaceAfterPunctuation(prefs);
+        mAutoSwitchToAlphaAfterApostrophe = Settings.readAutoSwitchToAlphaAfterApostrophe(prefs);
     }
 
     public boolean isWordSeparator(final int code) {

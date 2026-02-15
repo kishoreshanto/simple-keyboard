@@ -64,6 +64,10 @@ public final class Settings extends BroadcastReceiver implements SharedPreferenc
     public static final String PREF_SHOW_NUMBER_ROW = "pref_show_number_row";
     public static final String PREF_SPACE_SWIPE = "pref_space_swipe";
     public static final String PREF_DELETE_SWIPE = "pref_delete_swipe";
+    public static final String PREF_DOUBLE_SPACE_PERIOD = "pref_double_space_period";
+    public static final String PREF_AUTO_SPACE_AFTER_PUNCTUATION = "pref_auto_space_after_punctuation";
+    public static final String PREF_AUTO_SWITCH_TO_ALPHA_AFTER_APOSTROPHE =
+            "pref_auto_switch_to_alpha_after_apostrophe";
     public static final String PREF_BACKGROUND_DIM_ALPHA = "pref_background_dim_alpha";
     public static final String PREF_BACKGROUND_DIM_BLUR_RADIUS = "pref_background_dim_blur_radius";
 
@@ -155,6 +159,9 @@ public final class Settings extends BroadcastReceiver implements SharedPreferenc
                     case PREF_ENABLE_IME_SWITCH:
                     case PREF_DELETE_SWIPE:
                     case PREF_SPACE_SWIPE:
+                    case PREF_DOUBLE_SPACE_PERIOD:
+                    case PREF_AUTO_SPACE_AFTER_PUNCTUATION:
+                    case PREF_AUTO_SWITCH_TO_ALPHA_AFTER_APOSTROPHE:
                     case PREF_VIBRATE_ON:
                     case PREF_SOUND_ON:
                     case PREF_POPUP_ON:
@@ -253,6 +260,18 @@ public final class Settings extends BroadcastReceiver implements SharedPreferenc
 
     public static boolean readDeleteSwipeEnabled(final SharedPreferences prefs) {
         return prefs.getBoolean(PREF_DELETE_SWIPE, false);
+    }
+
+    public static boolean readDoubleSpacePeriod(final SharedPreferences prefs) {
+        return prefs.getBoolean(PREF_DOUBLE_SPACE_PERIOD, true);
+    }
+
+    public static boolean readAutoSpaceAfterPunctuation(final SharedPreferences prefs) {
+        return prefs.getBoolean(PREF_AUTO_SPACE_AFTER_PUNCTUATION, true);
+    }
+
+    public static boolean readAutoSwitchToAlphaAfterApostrophe(final SharedPreferences prefs) {
+        return prefs.getBoolean(PREF_AUTO_SWITCH_TO_ALPHA_AFTER_APOSTROPHE, true);
     }
 
     public static String readPrefSubtypes(final SharedPreferences prefs) {
