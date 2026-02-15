@@ -320,6 +320,14 @@ public final class RichInputConnection {
         return Character.codePointAt(mTextAfterCursor, 0);
     }
 
+    public String getTextBeforeCursor() {
+        return mTextBeforeCursor;
+    }
+
+    public String getTextAfterCursor() {
+        return mTextAfterCursor;
+    }
+
     public void replaceText(final int startPosition, final int endPosition, CharSequence text) {
         if (mExpectedSelStart != mExpectedSelEnd) {
             Log.e(TAG, "replaceText called with text range selected");

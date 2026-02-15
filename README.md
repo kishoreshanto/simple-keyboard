@@ -9,19 +9,21 @@
 ## About
 
 Features:
+
 - Small size (<1MB)
 - Adjustable keyboard height for more screen space
 - Number row
 - Swipe space to move pointer
 - Delete swipe
+- Dictionary-backed current-word suggestions (English, prefix completion)
 - Custom theme colors
 - Minimal permissions (only Vibrate)
 - Ads-free
 
 Feature it doesn't have and probably will never have:
+
 - Emojis
 - GIFs
-- Spell checker
 - Swipe typing
 
 ## Downloads
