@@ -100,4 +100,14 @@
         android:title="@string/prefs_bottom_offset_portrait_settings"
         android:restrictionType="integer"
         android:defaultValue="0" />
+    <restriction
+        android:key="pref_background_dim_alpha"
+        android:title="@string/prefs_background_dim_alpha"
+        android:restrictionType="integer"
+        android:defaultValue="128" />
+    <restriction
+        android:key="pref_background_dim_blur_radius"
+        android:title="@string/prefs_background_dim_blur_radius"
+        android:restrictionType="integer"
+        android:defaultValue="0" />
 </restrictions>

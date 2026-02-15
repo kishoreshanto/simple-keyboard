@@ -110,6 +110,8 @@
 
     <string name="prefs_keyboard_height_settings">Keyboard height</string>
     <string name="prefs_bottom_offset_portrait_settings">Bottom offset</string>
+     <string name="prefs_background_dim_alpha">More keys dim alpha</string>
+     <string name="prefs_background_dim_blur_radius">More keys blur radius</string>
     <string name="keyboard_color">Set custom keyboard color</string>
     <string name="show_special_chars">Show special characters</string>
     <string name="show_language_switch_key">Show language switch key</string>

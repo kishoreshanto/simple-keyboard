@@ -58,4 +58,18 @@
     <integer name="config_max_bottom_offset_portrait">100</integer>
     <integer name="config_min_bottom_offset_portrait">0</integer>
     <integer name="config_bottom_offset_step">1</integer>
+
+    <!-- More keys background dim -->
+    <integer name="config_default_background_dim_alpha">15</integer>
+    <integer name="config_max_background_dim_alpha">255</integer>
+    <integer name="config_min_background_dim_alpha">0</integer>
+    <integer name="config_background_dim_alpha_step">1</integer>
+
+    <!-- More keys background blur (dp) -->
+    <integer name="config_default_background_dim_blur_radius">5</integer>
+    <integer name="config_max_background_dim_blur_radius">40</integer>
+    <integer name="config_min_background_dim_blur_radius">0</integer>
+    <integer name="config_background_dim_blur_radius_step">1</integer>
+
+    <dimen name="config_background_dim_blur_radius">5dp</dimen>
 </resources>

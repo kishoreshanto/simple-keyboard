@@ -64,6 +64,8 @@ public final class Settings extends BroadcastReceiver implements SharedPreferenc
     public static final String PREF_SHOW_NUMBER_ROW = "pref_show_number_row";
     public static final String PREF_SPACE_SWIPE = "pref_space_swipe";
     public static final String PREF_DELETE_SWIPE = "pref_delete_swipe";
+    public static final String PREF_BACKGROUND_DIM_ALPHA = "pref_background_dim_alpha";
+    public static final String PREF_BACKGROUND_DIM_BLUR_RADIUS = "pref_background_dim_blur_radius";
 
     private static final float UNDEFINED_PREFERENCE_VALUE_FLOAT = -1.0f;
     private static final int UNDEFINED_PREFERENCE_VALUE_INT = -1;
@@ -166,6 +168,8 @@ public final class Settings extends BroadcastReceiver implements SharedPreferenc
                         break;
                     case PREF_KEY_LONGPRESS_TIMEOUT:
                     case PREF_BOTTOM_OFFSET_PORTRAIT:
+                    case PREF_BACKGROUND_DIM_ALPHA:
+                    case PREF_BACKGROUND_DIM_BLUR_RADIUS:
                         Log.i(TAG, "Loading restriction: " + key + "=" + appRestrictions.getInt(key));
                         prefsEditor.putInt(key, appRestrictions.getInt(key));
                         break;
@@ -291,6 +295,16 @@ public final class Settings extends BroadcastReceiver implements SharedPreferenc
 
     public static int readBottomOffsetPortrait(final SharedPreferences prefs) {
         return prefs.getInt(PREF_BOTTOM_OFFSET_PORTRAIT, DEFAULT_BOTTOM_OFFSET);
+    }
+
+    public static int readBackgroundDimAlpha(final SharedPreferences prefs, final int defaultValue) {
+        final int value = prefs.getInt(PREF_BACKGROUND_DIM_ALPHA, defaultValue);
+        return Math.max(0, Math.min(255, value));
+    }
+
+    public static int readBackgroundDimBlurRadius(final SharedPreferences prefs,
+            final int defaultValue) {
+        return Math.max(0, prefs.getInt(PREF_BACKGROUND_DIM_BLUR_RADIUS, defaultValue));
     }
 
     public static final int DEFAULT_BOTTOM_OFFSET = 0;

@@ -104,6 +104,7 @@
         <!-- Layout resource for more keys keyboard -->
         <attr name="moreKeysKeyboardLayout" format="reference" />
         <attr name="backgroundDimAlpha" format="integer" />
+          <attr name="backgroundDimBlurRadius" format="dimension" />
         <!-- More keys keyboard will shown at touched point. -->
         <attr name="showMoreKeysKeyboardAtTouchedPoint" format="boolean" />
     </declare-styleable>

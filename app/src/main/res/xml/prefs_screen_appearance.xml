@@ -42,5 +42,17 @@
             latin:minValue="@integer/config_min_bottom_offset_portrait"
             latin:maxValue="@integer/config_max_bottom_offset_portrait"
             latin:stepValue="@integer/config_bottom_offset_step" />
+        <rkr.simplekeyboard.inputmethod.latin.settings.SeekBarDialogPreference
+            android:key="pref_background_dim_alpha"
+            android:title="@string/prefs_background_dim_alpha"
+            latin:minValue="@integer/config_min_background_dim_alpha"
+            latin:maxValue="@integer/config_max_background_dim_alpha"
+            latin:stepValue="@integer/config_background_dim_alpha_step" />
+        <rkr.simplekeyboard.inputmethod.latin.settings.SeekBarDialogPreference
+            android:key="pref_background_dim_blur_radius"
+            android:title="@string/prefs_background_dim_blur_radius"
+            latin:minValue="@integer/config_min_background_dim_blur_radius"
+            latin:maxValue="@integer/config_max_background_dim_blur_radius"
+            latin:stepValue="@integer/config_background_dim_blur_radius_step" />
     </PreferenceCategory>
 </PreferenceScreen>

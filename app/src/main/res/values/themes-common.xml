@@ -41,7 +41,8 @@
         <item name="keyShiftedLetterHintPadding">@dimen/config_key_shifted_letter_hint_padding</item>
         <item name="keyPreviewTextRatio">@fraction/config_key_preview_text_ratio</item>
         <item name="verticalCorrection">@dimen/config_keyboard_vertical_correction</item>
-        <item name="backgroundDimAlpha">128</item>
+        <item name="backgroundDimAlpha">15</item>
+        <item name="backgroundDimBlurRadius">@dimen/config_background_dim_blur_radius</item>
         <!-- Common attributes of MainKeyboardView -->
         <item name="keyHysteresisDistance">@dimen/config_key_hysteresis_distance</item>
         <item name="touchNoiseThresholdTime">@integer/config_touch_noise_threshold_time</item>

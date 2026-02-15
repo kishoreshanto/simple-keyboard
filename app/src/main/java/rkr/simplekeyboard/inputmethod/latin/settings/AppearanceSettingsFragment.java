@@ -39,6 +39,8 @@ public final class AppearanceSettingsFragment extends SubScreenFragment {
         setupKeyboardHeightSettings();
         setupBottomOffsetPortraitSettings();
         setupKeyboardColorSettings();
+        setupBackgroundDimAlphaSettings();
+        setupBackgroundDimBlurRadiusSettings();
     }
 
     @Override
@@ -182,6 +184,86 @@ public final class AppearanceSettingsFragment extends SubScreenFragment {
             public void writeDefaultValue(final String key) {
                 Settings.removeKeyboardColor(prefs);
             }
+        });
+    }
+
+    private void setupBackgroundDimAlphaSettings() {
+        final SeekBarDialogPreference pref = (SeekBarDialogPreference)findPreference(
+                Settings.PREF_BACKGROUND_DIM_ALPHA);
+        if (pref == null) {
+            return;
+        }
+        final SharedPreferences prefs = getSharedPreferences();
+        final Resources res = getResources();
+        final int defaultValue = res.getInteger(R.integer.config_default_background_dim_alpha);
+        pref.setInterface(new SeekBarDialogPreference.ValueProxy() {
+            @Override
+            public void writeValue(final int value, final String key) {
+                prefs.edit().putInt(key, value).apply();
+            }
+
+            @Override
+            public void writeDefaultValue(final String key) {
+                prefs.edit().remove(key).apply();
+            }
+
+            @Override
+            public int readValue(final String key) {
+                return Settings.readBackgroundDimAlpha(prefs, defaultValue);
+            }
+
+            @Override
+            public int readDefaultValue(final String key) {
+                return defaultValue;
+            }
+
+            @Override
+            public String getValueText(final int value) {
+                return Integer.toString(value);
+            }
+
+            @Override
+            public void feedbackValue(final int value) {}
+        });
+    }
+
+    private void setupBackgroundDimBlurRadiusSettings() {
+        final SeekBarDialogPreference pref = (SeekBarDialogPreference)findPreference(
+                Settings.PREF_BACKGROUND_DIM_BLUR_RADIUS);
+        if (pref == null) {
+            return;
+        }
+        final SharedPreferences prefs = getSharedPreferences();
+        final Resources res = getResources();
+        final int defaultValue = res.getInteger(R.integer.config_default_background_dim_blur_radius);
+        pref.setInterface(new SeekBarDialogPreference.ValueProxy() {
+            @Override
+            public void writeValue(final int value, final String key) {
+                prefs.edit().putInt(key, value).apply();
+            }
+
+            @Override
+            public void writeDefaultValue(final String key) {
+                prefs.edit().remove(key).apply();
+            }
+
+            @Override
+            public int readValue(final String key) {
+                return Settings.readBackgroundDimBlurRadius(prefs, defaultValue);
+            }
+
+            @Override
+            public int readDefaultValue(final String key) {
+                return defaultValue;
+            }
+
+            @Override
+            public String getValueText(final int value) {
+                return res.getString(R.string.abbreviation_unit_dp, value);
+            }
+
+            @Override
+            public void feedbackValue(final int value) {}
         });
     }
 }

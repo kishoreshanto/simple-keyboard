@@ -21,6 +21,7 @@ package rkr.simplekeyboard.inputmethod.keyboard;
 import android.animation.AnimatorInflater;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
@@ -28,7 +29,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
+import android.graphics.RenderEffect;
+import android.graphics.Shader;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -48,10 +52,12 @@ import rkr.simplekeyboard.inputmethod.keyboard.internal.KeyPreviewView;
 import rkr.simplekeyboard.inputmethod.keyboard.internal.MoreKeySpec;
 import rkr.simplekeyboard.inputmethod.keyboard.internal.NonDistinctMultitouchHelper;
 import rkr.simplekeyboard.inputmethod.keyboard.internal.TimerHandler;
+import rkr.simplekeyboard.inputmethod.compat.PreferenceManagerCompat;
 import rkr.simplekeyboard.inputmethod.latin.Subtype;
 import rkr.simplekeyboard.inputmethod.latin.RichInputMethodManager;
 import rkr.simplekeyboard.inputmethod.latin.common.Constants;
 import rkr.simplekeyboard.inputmethod.latin.common.CoordinateUtils;
+import rkr.simplekeyboard.inputmethod.latin.settings.Settings;
 import rkr.simplekeyboard.inputmethod.latin.utils.LanguageOnSpacebarUtils;
 import rkr.simplekeyboard.inputmethod.latin.utils.LocaleResourceUtils;
 import rkr.simplekeyboard.inputmethod.latin.utils.TypefaceUtils;
@@ -91,7 +97,10 @@ public final class MainKeyboardView extends KeyboardView implements MoreKeysPane
 
     // More keys keyboard
     private final Paint mBackgroundDimAlphaPaint = new Paint();
-    private final int mBackgroundDimAlpha;
+    private final int mBackgroundDimAlphaDefault;
+    private int mBackgroundDimAlpha;
+    private final int mBackgroundDimBlurRadiusDefault;
+    private int mBackgroundDimBlurRadius;
     private final View mMoreKeysKeyboardContainer;
     private final WeakHashMap<Key, Keyboard> mMoreKeysKeyboardCache = new WeakHashMap<>();
     private final boolean mConfigShowMoreKeysKeyboardAtTouchedPoint;
@@ -135,8 +144,12 @@ public final class MainKeyboardView extends KeyboardView implements MoreKeysPane
         mNonDistinctMultitouchHelper = hasDistinctMultitouch ? null
                 : new NonDistinctMultitouchHelper();
 
-        mBackgroundDimAlpha = mainKeyboardViewAttr.getInt(
+        mBackgroundDimAlphaDefault = mainKeyboardViewAttr.getInt(
                 R.styleable.MainKeyboardView_backgroundDimAlpha, 0);
+        mBackgroundDimAlpha = mBackgroundDimAlphaDefault;
+        mBackgroundDimBlurRadiusDefault = mainKeyboardViewAttr.getDimensionPixelSize(
+            R.styleable.MainKeyboardView_backgroundDimBlurRadius, 0);
+        mBackgroundDimBlurRadius = mBackgroundDimBlurRadiusDefault;
         mBackgroundDimAlphaPaint.setAlpha(mBackgroundDimAlpha);
         mLanguageOnSpacebarTextRatio = mainKeyboardViewAttr.getFraction(
                 R.styleable.MainKeyboardView_languageOnSpacebarTextRatio, 1, 1, 1.0f);
@@ -253,7 +266,13 @@ public final class MainKeyboardView extends KeyboardView implements MoreKeysPane
         // Remove any pending messages, except dismissing preview and key repeat.
         mTimerHandler.cancelLongPressTimers();
         super.setKeyboard(keyboard);
+        final SharedPreferences prefs = PreferenceManagerCompat.getDeviceSharedPreferences(getContext());
+        mBackgroundDimAlpha = Settings.readBackgroundDimAlpha(prefs, mBackgroundDimAlphaDefault);
+        final int defaultBlurRadiusDp = pixelsToDp(mBackgroundDimBlurRadiusDefault);
+        final int blurRadiusDp = Settings.readBackgroundDimBlurRadius(prefs, defaultBlurRadiusDp);
+        mBackgroundDimBlurRadius = dpToPixels(blurRadiusDp);
         updateBackgroundDimColor();
+        updateBackgroundBlurEffect();
         mKeyDetector.setKeyboard(
                 keyboard, -getPaddingLeft(), -getPaddingTop() + getVerticalCorrection());
         PointerTracker.setKeyDetector(mKeyDetector);
@@ -285,6 +304,28 @@ public final class MainKeyboardView extends KeyboardView implements MoreKeysPane
         }
         mBackgroundDimAlphaPaint.setColor(useDarkDim ? Color.BLACK : Color.WHITE);
         mBackgroundDimAlphaPaint.setAlpha(mBackgroundDimAlpha);
+    }
+
+    private int dpToPixels(final int dp) {
+        return Math.round(dp * getResources().getDisplayMetrics().density);
+    }
+
+    private int pixelsToDp(final int pixels) {
+        return Math.round(pixels / getResources().getDisplayMetrics().density);
+    }
+
+    private void updateBackgroundBlurEffect() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+            return;
+        }
+        if (isShowingMoreKeysPanel() && mBackgroundDimBlurRadius > 0) {
+            setRenderEffect(RenderEffect.createBlurEffect(
+                    mBackgroundDimBlurRadius,
+                    mBackgroundDimBlurRadius,
+                    Shader.TileMode.CLAMP));
+            return;
+        }
+        setRenderEffect(null);
     }
 
     @Override
@@ -466,6 +507,7 @@ public final class MainKeyboardView extends KeyboardView implements MoreKeysPane
         // Dismiss sliding key input preview that may be being showed.
         panel.showInParent(mDrawingPreviewPlacerView);
         mMoreKeysPanel = panel;
+        updateBackgroundBlurEffect();
         invalidate();
     }
 
@@ -483,6 +525,7 @@ public final class MainKeyboardView extends KeyboardView implements MoreKeysPane
         if (isShowingMoreKeysPanel()) {
             mMoreKeysPanel.removeFromParent();
             mMoreKeysPanel = null;
+            updateBackgroundBlurEffect();
             invalidate();
         }
     }
