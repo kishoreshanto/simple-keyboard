@@ -78,6 +78,8 @@
         <item name="android:background">@drawable/keyboard_popup_panel_background</item>
         <item name="keyBackground">@drawable/btn_keyboard_key_popup</item>
         <item name="keyTypeface">normal</item>
+        <item name="keyLetterSize">34%</item>
+        <item name="keyLabelSize">28%</item>
         <item name="verticalCorrection">@dimen/config_more_keys_keyboard_vertical_correction</item>
     </style>
 </resources>

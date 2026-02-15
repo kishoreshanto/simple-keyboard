@@ -262,6 +262,14 @@ public final class MainKeyboardView extends KeyboardView implements MoreKeysPane
         mLanguageOnSpacebarTextSize = keyHeight * mLanguageOnSpacebarTextRatio;
     }
 
+    @Override
+    protected void onDraw(final Canvas canvas) {
+        super.onDraw(canvas);
+        if (isShowingMoreKeysPanel() && mBackgroundDimAlphaPaint.getAlpha() > 0) {
+            canvas.drawRect(0.0f, 0.0f, getWidth(), getHeight(), mBackgroundDimAlphaPaint);
+        }
+    }
+
     /**
      * Enables or disables the key preview popup. This is a popup that shows a magnified
      * version of the depressed key. By default the preview is enabled.
@@ -433,6 +441,7 @@ public final class MainKeyboardView extends KeyboardView implements MoreKeysPane
         // Dismiss sliding key input preview that may be being showed.
         panel.showInParent(mDrawingPreviewPlacerView);
         mMoreKeysPanel = panel;
+        invalidate();
     }
 
     public boolean isShowingMoreKeysPanel() {
@@ -449,6 +458,7 @@ public final class MainKeyboardView extends KeyboardView implements MoreKeysPane
         if (isShowingMoreKeysPanel()) {
             mMoreKeysPanel.removeFromParent();
             mMoreKeysPanel = null;
+            invalidate();
         }
     }
 

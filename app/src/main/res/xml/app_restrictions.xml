@@ -70,12 +70,12 @@
         android:key="popup_on"
         android:title="@string/popup_on_keypress"
         android:restrictionType="bool"
-        android:defaultValue="true" />
+        android:defaultValue="false" />
     <restriction
         android:key="pref_key_longpress_timeout"
         android:title="@string/prefs_key_longpress_timeout_settings"
         android:restrictionType="integer"
-        android:defaultValue="300" />
+        android:defaultValue="150" />
     <!-- settings_screen_appearance -->
     <restriction
         android:key="screen_theme"
