@@ -22,6 +22,7 @@ import android.animation.AnimatorInflater;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -90,6 +91,7 @@ public final class MainKeyboardView extends KeyboardView implements MoreKeysPane
 
     // More keys keyboard
     private final Paint mBackgroundDimAlphaPaint = new Paint();
+    private final int mBackgroundDimAlpha;
     private final View mMoreKeysKeyboardContainer;
     private final WeakHashMap<Key, Keyboard> mMoreKeysKeyboardCache = new WeakHashMap<>();
     private final boolean mConfigShowMoreKeysKeyboardAtTouchedPoint;
@@ -133,10 +135,9 @@ public final class MainKeyboardView extends KeyboardView implements MoreKeysPane
         mNonDistinctMultitouchHelper = hasDistinctMultitouch ? null
                 : new NonDistinctMultitouchHelper();
 
-        final int backgroundDimAlpha = mainKeyboardViewAttr.getInt(
+        mBackgroundDimAlpha = mainKeyboardViewAttr.getInt(
                 R.styleable.MainKeyboardView_backgroundDimAlpha, 0);
-        mBackgroundDimAlphaPaint.setColor(Color.BLACK);
-        mBackgroundDimAlphaPaint.setAlpha(backgroundDimAlpha);
+        mBackgroundDimAlphaPaint.setAlpha(mBackgroundDimAlpha);
         mLanguageOnSpacebarTextRatio = mainKeyboardViewAttr.getFraction(
                 R.styleable.MainKeyboardView_languageOnSpacebarTextRatio, 1, 1, 1.0f);
         mLanguageOnSpacebarTextColor = mainKeyboardViewAttr.getColor(
@@ -252,6 +253,7 @@ public final class MainKeyboardView extends KeyboardView implements MoreKeysPane
         // Remove any pending messages, except dismissing preview and key repeat.
         mTimerHandler.cancelLongPressTimers();
         super.setKeyboard(keyboard);
+        updateBackgroundDimColor();
         mKeyDetector.setKeyboard(
                 keyboard, -getPaddingLeft(), -getPaddingTop() + getVerticalCorrection());
         PointerTracker.setKeyDetector(mKeyDetector);
@@ -260,6 +262,29 @@ public final class MainKeyboardView extends KeyboardView implements MoreKeysPane
         mSpaceKey = keyboard.getKey(Constants.CODE_SPACE);
         final int keyHeight = keyboard.mMostCommonKeyHeight;
         mLanguageOnSpacebarTextSize = keyHeight * mLanguageOnSpacebarTextRatio;
+    }
+
+    private void updateBackgroundDimColor() {
+        boolean useDarkDim = false;
+        if (mTheme != null) {
+            switch (mTheme.mThemeId) {
+            case KeyboardTheme.THEME_ID_DARK:
+            case KeyboardTheme.THEME_ID_DARK_BORDER:
+                useDarkDim = true;
+                break;
+            case KeyboardTheme.THEME_ID_SYSTEM:
+            case KeyboardTheme.THEME_ID_SYSTEM_BORDER:
+                final int nightModeFlags = getResources().getConfiguration().uiMode
+                        & Configuration.UI_MODE_NIGHT_MASK;
+                useDarkDim = nightModeFlags == Configuration.UI_MODE_NIGHT_YES;
+                break;
+            default:
+                useDarkDim = false;
+                break;
+            }
+        }
+        mBackgroundDimAlphaPaint.setColor(useDarkDim ? Color.BLACK : Color.WHITE);
+        mBackgroundDimAlphaPaint.setAlpha(mBackgroundDimAlpha);
     }
 
     @Override
