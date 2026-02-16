@@ -101,6 +101,7 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
     private View mInputView;
     private View mSuggestionStripView;
     private final TextView[] mSuggestionViews = new TextView[MAX_SUGGESTIONS];
+    private final TextView[] mSuggestionDividerViews = new TextView[MAX_SUGGESTIONS - 1];
     private final String[] mSuggestedWords = new String[MAX_SUGGESTIONS];
     private SuggestionEngine mSuggestionEngine;
 
@@ -737,6 +738,8 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
         mSuggestionViews[0] = inputView.findViewById(R.id.suggestion_1);
         mSuggestionViews[1] = inputView.findViewById(R.id.suggestion_2);
         mSuggestionViews[2] = inputView.findViewById(R.id.suggestion_3);
+        mSuggestionDividerViews[0] = inputView.findViewById(R.id.suggestion_divider_1);
+        mSuggestionDividerViews[1] = inputView.findViewById(R.id.suggestion_divider_2);
         for (int index = 0; index < mSuggestionViews.length; index++) {
             final int suggestionIndex = index;
             mSuggestionViews[index].setOnClickListener(v -> commitSuggestion(suggestionIndex));
@@ -752,6 +755,9 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
             mSuggestedWords[index] = null;
             mSuggestionViews[index].setText("");
             mSuggestionViews[index].setVisibility(View.INVISIBLE);
+        }
+        for (final TextView dividerView : mSuggestionDividerViews) {
+            dividerView.setVisibility(View.INVISIBLE);
         }
         mSuggestionStripView.setVisibility(View.GONE);
     }
@@ -799,6 +805,14 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
                 mSuggestionViews[index].setVisibility(View.INVISIBLE);
             }
         }
+        mSuggestionDividerViews[0].setVisibility(
+                mSuggestionViews[0].getVisibility() == View.VISIBLE
+                        && mSuggestionViews[1].getVisibility() == View.VISIBLE
+                        ? View.VISIBLE : View.INVISIBLE);
+        mSuggestionDividerViews[1].setVisibility(
+                mSuggestionViews[1].getVisibility() == View.VISIBLE
+                        && mSuggestionViews[2].getVisibility() == View.VISIBLE
+                        ? View.VISIBLE : View.INVISIBLE);
         mSuggestionStripView.setVisibility(View.VISIBLE);
     }
 
@@ -823,7 +837,7 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
         }
 
         mInputLogic.mConnection.deleteTextBeforeCursor(currentWordInfo.mCharLength);
-        mInputLogic.mConnection.commitText(suggestedWord, 1);
+        mInputLogic.mConnection.commitText(suggestedWord + " ", 1);
         mKeyboardSwitcher.requestUpdatingShiftState(getCurrentAutoCapsState(),
                 getCurrentRecapitalizeState());
         refreshSuggestionStrip();

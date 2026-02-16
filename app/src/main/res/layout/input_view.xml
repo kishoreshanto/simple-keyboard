@@ -61,11 +61,24 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@android:color/transparent"
+                    android:background="@drawable/btn_keyboard_key"
+                    android:clickable="true"
+                    android:focusable="false"
                     android:ellipsize="end"
                     android:gravity="center"
                     android:maxLines="1"
                     android:paddingHorizontal="8dp"
+                    android:textColor="?attr/functionalTextColor"
+                    android:textStyle="bold"
+                    android:visibility="invisible" />
+
+                <TextView
+                    android:id="@+id/suggestion_divider_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:paddingHorizontal="2dp"
+                    android:text="|"
                     android:textColor="?attr/functionalTextColor"
                     android:textStyle="bold"
                     android:visibility="invisible" />
@@ -75,7 +88,9 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@android:color/transparent"
+                    android:background="@drawable/btn_keyboard_key"
+                    android:clickable="true"
+                    android:focusable="false"
                     android:ellipsize="end"
                     android:gravity="center"
                     android:maxLines="1"
@@ -85,11 +100,24 @@
                     android:visibility="invisible" />
 
                 <TextView
+                    android:id="@+id/suggestion_divider_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:paddingHorizontal="2dp"
+                    android:text="|"
+                    android:textColor="?attr/functionalTextColor"
+                    android:textStyle="bold"
+                    android:visibility="invisible" />
+
+                <TextView
                     android:id="@+id/suggestion_3"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@android:color/transparent"
+                    android:background="@drawable/btn_keyboard_key"
+                    android:clickable="true"
+                    android:focusable="false"
                     android:ellipsize="end"
                     android:gravity="center"
                     android:maxLines="1"
