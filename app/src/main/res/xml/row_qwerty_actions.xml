@@ -25,13 +25,13 @@
         <Key
             latin:keySpec="!icon/paste_key_small|!code/key_paste"
             latin:keyActionFlags="noKeyPreview"
-            latin:backgroundType="functional"
-            latin:keyWidth="14%p" />
-        <Spacer latin:keyWidth="72%p" />
+            latin:backgroundType="action"
+            latin:keyWidth="9%p" />
+        <Spacer latin:keyWidth="82%p" />
         <Key
             latin:keySpec="!icon/settings_key_small|!code/key_settings"
             latin:keyActionFlags="noKeyPreview"
-            latin:backgroundType="functional"
-            latin:keyWidth="14%p" />
+            latin:backgroundType="action"
+            latin:keyWidth="9%p" />
     </Row>
 </merge>
